@@ -29,10 +29,6 @@ public class Intake {
 
     double speed = .5;
 
-
-//    int SlidePos = 1;
-//    int ArmPos = 2;
-
     DriveTrain Drive = new DriveTrain();
 
 

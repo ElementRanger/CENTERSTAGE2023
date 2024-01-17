@@ -46,7 +46,6 @@ public class Teleop extends LinearOpMode {
         int CYCLE_MS = 50;     // period of each cycle
 
 
-
         while (opModeIsActive()) {
             newGamePad1.updateState();
             newGamePad2.updateState();
@@ -75,21 +74,21 @@ public class Teleop extends LinearOpMode {
                 }
             }
 
-                if (gamepad1.left_stick_y < -0.4) {
-                    Drive.forward(speed);
-                } else if (gamepad1.left_stick_y > 0.4) {
-                    Drive.backward(speed);
-                } else if (gamepad1.left_stick_x > 0.4) {
-                    Drive.strafeRight(speed);
-                } else if (gamepad1.left_stick_x < -0.4) {
-                    Drive.strafeLeft(speed);
-                } else if (gamepad1.right_stick_x > 0.4) {
-                    Drive.turnRight(speed);
-                } else if (gamepad1.right_stick_x < -0.4) {
-                    Drive.turnLeft(speed);
-                } else {
-                    Drive.stop();
-                }
+            if (gamepad1.left_stick_y < -0.4) {
+                Drive.forward(speed);
+            } else if (gamepad1.left_stick_y > 0.4) {
+                Drive.backward(speed);
+            } else if (gamepad1.left_stick_x > 0.4) {
+                Drive.strafeRight(speed);
+            } else if (gamepad1.left_stick_x < -0.4) {
+                Drive.strafeLeft(speed);
+            } else if (gamepad1.right_stick_x > 0.4) {
+                Drive.turnRight(speed);
+            } else if (gamepad1.right_stick_x < -0.4) {
+                Drive.turnLeft(speed);
+            } else {
+                Drive.stop();
+            }
 
 //            //slides movement
 //            if (gamepad2.dpad_up) {
@@ -166,7 +165,9 @@ public class Teleop extends LinearOpMode {
             //armState2: scoring position
 
             if (newGamePad2.dpad_right.released) {
-                ArmState++;
+                if((stateSlide==2||stateSlide==3||ArmState==0)) {
+                    ArmState++;
+                }
                 if (ArmState >= 2) {
                     ArmState = 2;
                 }
