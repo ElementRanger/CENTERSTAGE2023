@@ -114,7 +114,9 @@ public class Teleop extends LinearOpMode {
                 }
                 stateThere = false;
             } else if (newGamePad2.dpad_down.released) {
-                stateSlide--;
+                if(stateSlide==3||ArmState==0||ArmState==1) {
+                    stateSlide--;
+                }
                 if (stateSlide < 0) {
                     stateSlide = 0;
                 }
