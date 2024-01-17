@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
-//"its litterally just the drivetrain program, just the intake" - the venerable eat ham.
+//"its literally just the drivetrain program, just the intake" - the venerable eat ham.
 
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
 import static java.lang.Thread.sleep;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -25,15 +27,25 @@ public class Intake {
 
     private ElapsedTime runtime = new ElapsedTime();
 
+    double speed = .5;
+
 
 //    int SlidePos = 1;
 //    int ArmPos = 2;
+
+    DriveTrain Drive = new DriveTrain();
+
+
+    GamepadStates newGamePad1 = new GamepadStates(gamepad1);
+    GamepadStates newGamePad2 = new GamepadStates(gamepad2);
 
     public void init(LinearOpMode opMode) {
         HardwareMap hwMap;
 
         opMode = opMode;
         hwMap = opMode.hardwareMap;
+
+        Drive.init(opMode);
 
         RightSlide = hwMap.dcMotor.get("RightSlide");
         LeftSlide = hwMap.dcMotor.get("LeftSlide");
@@ -60,10 +72,10 @@ public class Intake {
 
         //armDown();
         apertureOpen();
-        mandOpen();
+//        mandOpen();
     }
 
-//slide
+    //slide
     public void slide0() {
         RightSlide.setTargetPosition(0);
         LeftSlide.setTargetPosition(0);
@@ -71,6 +83,21 @@ public class Intake {
         LeftSlide.setPower(.5);
         RightSlide.setPower(.5);
         while (LeftSlide.isBusy() && RightSlide.isBusy()) {
+            if (gamepad1.left_stick_y < -0.4) {
+                Drive.forward(speed);
+            } else if (gamepad1.left_stick_y > 0.4) {
+                Drive.backward(speed);
+            } else if (gamepad1.left_stick_x > 0.4) {
+                Drive.strafeRight(speed);
+            } else if (gamepad1.left_stick_x < -0.4) {
+                Drive.strafeLeft(speed);
+            } else if (gamepad1.right_stick_x > 0.4) {
+                Drive.turnRight(speed);
+            } else if (gamepad1.right_stick_x < -0.4) {
+                Drive.turnLeft(speed);
+            } else {
+                Drive.stop();
+            }
         }
         slideStop();
     }
@@ -82,6 +109,21 @@ public class Intake {
         LeftSlide.setPower(.5);
         RightSlide.setPower(.5);
         while (LeftSlide.isBusy() && RightSlide.isBusy()) {
+            if (gamepad1.left_stick_y < -0.4) {
+                Drive.forward(speed);
+            } else if (gamepad1.left_stick_y > 0.4) {
+                Drive.backward(speed);
+            } else if (gamepad1.left_stick_x > 0.4) {
+                Drive.strafeRight(speed);
+            } else if (gamepad1.left_stick_x < -0.4) {
+                Drive.strafeLeft(speed);
+            } else if (gamepad1.right_stick_x > 0.4) {
+                Drive.turnRight(speed);
+            } else if (gamepad1.right_stick_x < -0.4) {
+                Drive.turnLeft(speed);
+            } else {
+                Drive.stop();
+            }
         }
         slideStop();
     }
@@ -93,6 +135,21 @@ public class Intake {
         RightSlide.setPower(.5);
         LeftSlide.setPower(.5);
         while (LeftSlide.isBusy() && RightSlide.isBusy()) {
+            if (gamepad1.left_stick_y < -0.4) {
+                Drive.forward(speed);
+            } else if (gamepad1.left_stick_y > 0.4) {
+                Drive.backward(speed);
+            } else if (gamepad1.left_stick_x > 0.4) {
+                Drive.strafeRight(speed);
+            } else if (gamepad1.left_stick_x < -0.4) {
+                Drive.strafeLeft(speed);
+            } else if (gamepad1.right_stick_x > 0.4) {
+                Drive.turnRight(speed);
+            } else if (gamepad1.right_stick_x < -0.4) {
+                Drive.turnLeft(speed);
+            } else {
+                Drive.stop();
+            }
         }
         slideStop();
     }
@@ -104,6 +161,21 @@ public class Intake {
         LeftSlide.setPower(.5);
         RightSlide.setPower(.5);
         while (LeftSlide.isBusy() && RightSlide.isBusy()) {
+            if (gamepad1.left_stick_y < -0.4) {
+                Drive.forward(speed);
+            } else if (gamepad1.left_stick_y > 0.4) {
+                Drive.backward(speed);
+            } else if (gamepad1.left_stick_x > 0.4) {
+                Drive.strafeRight(speed);
+            } else if (gamepad1.left_stick_x < -0.4) {
+                Drive.strafeLeft(speed);
+            } else if (gamepad1.right_stick_x > 0.4) {
+                Drive.turnRight(speed);
+            } else if (gamepad1.right_stick_x < -0.4) {
+                Drive.turnLeft(speed);
+            } else {
+                Drive.stop();
+            }
         }
         slideStop();
     }
@@ -125,8 +197,8 @@ public class Intake {
 
     //obtaining pixels
     public void apertureOpen() {
-        LeftAp.setPosition(.45);
-        RightAp.setPosition(.4);
+        LeftAp.setPosition(.4);
+        RightAp.setPosition(.35);
     }
 
     public void apertureClose() {
@@ -136,17 +208,21 @@ public class Intake {
 
     //scooping pixels
     public void mandClose() {
-        RightMand.setPosition(1);
-        LeftMand.setPosition(0);
+        RightMand.setPosition(.75);
+        LeftMand.setPosition(.25);
     }
 
     public void mandOpen() {
-        RightMand.setPosition(0);
-        LeftMand.setPosition(1);
+        RightMand.setPosition(.35);
+        LeftMand.setPosition(.65);
+    }
+
+    public void mandSecure() {
+        RightMand.setPosition(.5);
+        LeftMand.setPosition(.5);
     }
 
     //arm
-
 
     public void armGrab() {
         RightArm.setPosition(0.35);
