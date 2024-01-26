@@ -107,21 +107,27 @@ public class DriveTrain {
     //
     public void forwardDistance(double speed, int distance) {
         int pulses = calculatePulses(distance);
-        BackLM.setTargetPosition(pulses);
-        BackRM.setTargetPosition(pulses);
+//        BackLM.setTargetPosition(pulses);
+//        BackRM.setTargetPosition(pulses);
         FrontLM.setTargetPosition(pulses);
         FrontRM.setTargetPosition(pulses);
 
         prepareEncoders();
 
-        BackLM.setPower(speed);
-        BackRM.setPower(speed);
-        FrontLM.setPower(speed);
-        FrontRM.setPower(speed);
 
-        while (BackLM.isBusy()) {
+
+        while (FrontRM.isBusy() && FrontLM.isBusy()) {
+            forward(speed);
         }
         stop();
+        motorReset();
+    }
+
+    public void motorReset() {
+        BackLM.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FrontLM.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FrontRM.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BackRM.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void stop() {
@@ -136,12 +142,12 @@ public class DriveTrain {
         BackRM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FrontRM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FrontLM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        BackLM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackRM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        BackLM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        BackRM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FrontLM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FrontRM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackLM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BackRM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        BackLM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        BackRM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontLM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontRM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
@@ -172,7 +178,7 @@ public class DriveTrain {
     public void turnMath(double angle, double kP) {
         imu.resetYaw();
         Boolean isDone = false;
-        double speed=0;
+        double speed = 0;
         while (!isDone) {
             YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
             opmode.telemetry.addData("Yaw", "%.2f Deg. (Heading)", orientation.getYaw(AngleUnit.DEGREES));
