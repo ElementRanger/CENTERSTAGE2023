@@ -30,6 +30,7 @@ public class Teleop extends LinearOpMode {
         boolean state3Finished = false;
         boolean state4Finished = false;
         boolean hung = false;
+        boolean matchFinished = false;
 
         //int SlideState = 0;
         // amount to slew servo each CYCLE_MS cycle
@@ -153,7 +154,9 @@ public class Teleop extends LinearOpMode {
 
             if (newGamePad2.right_trigger.released) {
                 manual = 1;
+                //Drive.resetEncoders();
                 state1Finished = false;
+                state3Finished = true;
             }
 
             if (stateSlide > 0) {
@@ -176,12 +179,17 @@ public class Teleop extends LinearOpMode {
                     intake.armLift();
                     ArmState = 1;
                     intake.slideHang();
+                    stateSlide = 1;
                     hung = true;
                 } else {
                     intake.slide0();
-                    while (opModeIsActive()) {
+                    while (!matchFinished) {
                         intake.RightSlide.setPower(.25);
                         intake.LeftSlide.setPower(.25);
+                        sleep(3000);
+                        intake.RightSlide.setPower(0.1);
+                        intake.LeftSlide.setPower(0.1);
+                        matchFinished = true;
                     }
                     hung = false;
                 }
@@ -259,7 +267,10 @@ public class Teleop extends LinearOpMode {
                     if (!state2Finished) {
                         intake.mandClose();
                         sleep(450);
-                        Drive.forwardDistance(.5, 2);
+//                        Drive.forwardDistance(.5, 2);
+                        Drive.forward(.5);
+                        sleep(500);
+                        Drive.stop();
                         intake.armScore();
                         sleep(250);
                         intake.armGrab();
@@ -294,7 +305,10 @@ public class Teleop extends LinearOpMode {
                     if (!state4Finished) {
                         intake.apertureClose();
                         sleep(250);
-                        Drive.forwardDistance(.5, 1);
+//                        Drive.forwardDistance(.5, 1);
+                        Drive.forward(.5);
+                        sleep(500);
+                        Drive.stop();
                         sleep(250);
                         intake.slideMaintain();
                         intake.armLift();

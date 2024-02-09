@@ -75,7 +75,7 @@ public class Intake {
 
         LeftSlide.setDirection(REVERSE);
 
-        //armDown();
+        armGrab();
         apertureOpen();
         mandClose();
     }
@@ -96,8 +96,8 @@ public class Intake {
         RightSlide.setTargetPosition(1450);
         LeftSlide.setTargetPosition(1450);
         slideEncoders();
-        LeftSlide.setPower(.25);
-        RightSlide.setPower(.25);
+        LeftSlide.setPower(.5);
+        RightSlide.setPower(.5);
         while (LeftSlide.isBusy() && RightSlide.isBusy()) {
             Drive.stop();
         }
@@ -105,8 +105,8 @@ public class Intake {
     }
 
     public void slideHang() {
-        RightSlide.setTargetPosition(1750);
-        LeftSlide.setTargetPosition(1750);
+        RightSlide.setTargetPosition(2450);
+        LeftSlide.setTargetPosition(2450);
         slideEncoders();
         RightSlide.setPower(.5);
         LeftSlide.setPower(.5);
@@ -177,7 +177,7 @@ public class Intake {
 
     public void apertureClose() {
         LeftAp.setPosition(.2);
-        RightAp.setPosition(.15);
+        RightAp.setPosition(.1);
     }
 
     //scooping pixels
@@ -213,6 +213,11 @@ public class Intake {
         RightArm.setPosition(0.05);
         LeftArm.setPosition(0.95);
 
+    }
+
+    public void purplePixel() {
+        RightAp.setPosition(0.1);
+        RightMand.setPosition(0.35);
     }
 
 
