@@ -55,9 +55,9 @@ public class DriveTrain {
         BackLM = hwMap.dcMotor.get("BackLM");
 
         FrontLM.setDirection(REVERSE);
-        FrontRM.setDirection(REVERSE);
+        FrontRM.setDirection(FORWARD);
         BackLM.setDirection(REVERSE);
-        BackRM.setDirection(FORWARD);
+        BackRM.setDirection(REVERSE);
 
         FrontRM.setPower(0);
         FrontLM.setPower(0);
@@ -95,63 +95,123 @@ public class DriveTrain {
 
     public void strafeRight(double speed) {
         FrontRM.setPower(-speed);
-        FrontLM.setPower(speed);
+        FrontLM.setPower(-speed);
         BackRM.setPower(speed);
-        BackLM.setPower(-speed);
+        BackLM.setPower(speed);
     }
+
 
     public void strafeLeft(double speed) {
         FrontRM.setPower(speed);
-        FrontLM.setPower(-speed);
-        BackLM.setPower(speed);
+        FrontLM.setPower(speed);
+        BackLM.setPower(-speed);
         BackRM.setPower(-speed);
     }
 //the ones with distance parameter- telescoping functions
 
     //
-    public void forwardDistance(double speed, int distance) {
+    public void forwardDistance(double speed, double distance) {
+        imu.resetYaw();
+        resetEncoders();
         int pulses = calculatePulses(distance);
         BackLM.setTargetPosition(pulses);
-        BackRM.setTargetPosition(pulses);
+        //BackRM.setTargetPosition(pulses);
         FrontLM.setTargetPosition(pulses);
         FrontRM.setTargetPosition(pulses);
         runEncoders();
 
-        while (FrontLM.isBusy() && FrontRM.isBusy() && BackRM.isBusy() && BackLM.isBusy()) {
+        while (FrontLM.isBusy() && FrontRM.isBusy() /*&& BackRM.isBusy() */ && BackLM.isBusy()) {
             forward(speed);
-            opmode.telemetry.addLine("Running");
-            opmode.telemetry.update();
+        }
+        stop();
+
+        motorReset();
+    }
+
+    public void backwardDistance(double speed, double distance) {
+        resetEncoders();
+        int pulses = calculatePulses(-distance);
+        BackLM.setTargetPosition(pulses);
+        //BackRM.setTargetPosition(pulses);
+        FrontLM.setTargetPosition(pulses);
+        FrontRM.setTargetPosition(pulses);
+        runEncoders();
+
+        while (FrontLM.isBusy() && FrontRM.isBusy() /*&& BackRM.isBusy() */ && BackLM.isBusy()) {
+            backward(speed);
         }
         stop();
         motorReset();
     }
-    public void strafeLeftFunction(double speed, int distance) {
-        int pulses = calculateStrafePulses(distance);
-        BackLM.setTargetPosition(pulses);
-        BackRM.setTargetPosition(pulses);
-        FrontLM.setTargetPosition(-pulses);
-        FrontRM.setTargetPosition(pulses);
-        runEncoders();
 
-        while (FrontLM.isBusy() && FrontRM.isBusy()) {
+    public void forwardDistance0(double speed, int distance) {
+        resetEncoders();
+        int pulses = calculatePulses(distance);
+        BackLM.setTargetPosition(pulses);
+//        BackRM.setTargetPosition(pulses);
+        FrontLM.setTargetPosition(pulses);
+        FrontRM.setTargetPosition(pulses);
+
+        prepareEncoders();
+
+        BackLM.setPower(speed);
+        BackRM.setPower(speed);
+        FrontLM.setPower(speed);
+        FrontRM.setPower(speed);
+
+        while (BackLM.isBusy()) {
+        }
+        stop();
+    }
+
+    public void prepareEncoders() {
+        BackLM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackRM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FrontRM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FrontLM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackLM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        BackRM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontLM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackLM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        BackRM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontLM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void strafeLeftFunction(double speed, int distance) {
+        FrontRM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        int pulses = calculateStrafePulses(distance);
+//        BackLM.setTargetPosition(pulses);
+//        BackRM.setTargetPosition(pulses);
+        FrontRM.setTargetPosition(pulses);
+//        FrontRM.setTargetPosition(pulses);
+//        runEncoders();
+
+        FrontRM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FrontRM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        while (FrontRM.isBusy()) {
             strafeLeft(speed);
         }
         stop();
-        motorReset();
+        FrontRM.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
     public void strafeRightFunction(double speed, int distance) {
+        BackLM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         int pulses = calculateStrafePulses(distance);
         BackLM.setTargetPosition(pulses);
-        BackRM.setTargetPosition(pulses);
-        FrontLM.setTargetPosition(pulses);
-        FrontRM.setTargetPosition(-pulses);
-        runEncoders();
-
-        while (FrontLM.isBusy() && FrontRM.isBusy()) {
+//        BackRM.setTargetPosition(pulses);
+//        FrontLM.setTargetPosition(-pulses);
+//        FrontRM.setTargetPosition(-pulses);
+//        runEncoders();
+        BackLM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BackLM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        while (BackLM.isBusy()) {
             strafeRight(speed);
         }
         stop();
-        motorReset();
+        BackLM.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void motorReset() {
@@ -168,31 +228,19 @@ public class DriveTrain {
         BackRM.setPower(0);
     }
 
-//    public void prepareEncoders() {
-//        BackLM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        BackRM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        FrontRM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        FrontLM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-////        BackLM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-////        BackRM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-////        FrontLM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-////        FrontRM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-////        BackLM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-////        BackRM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-////        FrontLM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-////        FrontRM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//    }
-
     public void resetEncoders() {
         BackLM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackRM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //BackRM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FrontLM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FrontRM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontLM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FrontRM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackLM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void runEncoders() {
         BackLM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BackRM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //BackRM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontLM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FrontRM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
@@ -203,7 +251,7 @@ public class DriveTrain {
 
     public void turn(double angle, double speed, boolean isLeft) {
         imu.resetYaw();
-        Boolean isDone = false;
+        boolean isDone = false;
         while (!isDone) {
             YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
             opmode.telemetry.addData("Yaw", "%.2f Deg. (Heading)", orientation.getYaw(AngleUnit.DEGREES));
@@ -219,30 +267,61 @@ public class DriveTrain {
                 imu.resetYaw();
                 stop();
                 isDone = true;
-                break;
             }
         }
     }
 
-    public void turn2Angle(double targetAngle, double speed) {
-        // left is negative, right is positive
+    public void correctHeading(double speed) {
+        double targetAngle = 0;
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
-        if (targetAngle > 0) {
-            while (orientation.getYaw(AngleUnit.DEGREES) <= targetAngle) {
-                opmode.telemetry.addData("angle: ", orientation.getYaw(AngleUnit.DEGREES));
-            }
-        }
-         else if (targetAngle < 0) {
-            while (orientation.getYaw(AngleUnit.DEGREES) >= targetAngle) {
-                turnRight(speed);
-                opmode.telemetry.addData("angle: ", orientation.getYaw(AngleUnit.DEGREES));
-                opmode.telemetry.update();
-            }
-        }
-        stop();
-        opmode.telemetry.addData("angle: ", orientation.getYaw(AngleUnit.DEGREES));
+
+        opmode.telemetry.addData("Yaw", "%.2f Deg. (Heading)", orientation.getYaw(AngleUnit.DEGREES));
         opmode.telemetry.update();
+        //opmode.sleep(500);
+
+        while (orientation.getYaw(AngleUnit.DEGREES) > targetAngle) {
+            double correction = Math.abs(orientation.getYaw(AngleUnit.DEGREES) - targetAngle);
+            correction *= 0.15;
+            turnRight((speed * correction) + 0.1);
+            orientation = imu.getRobotYawPitchRollAngles();
+            opmode.telemetry.addData("Yaw", "%.2f Deg. (Heading)", orientation.getYaw(AngleUnit.DEGREES));
+            opmode.telemetry.update();
+        }
+
+        while (orientation.getYaw(AngleUnit.DEGREES) < targetAngle) {
+            double correction = Math.abs(orientation.getYaw(AngleUnit.DEGREES) - targetAngle);
+            correction *= 0.15;
+            turnLeft((speed * correction) + 0.1);
+            orientation = imu.getRobotYawPitchRollAngles();
+            opmode.telemetry.addData("Yaw", "%.2f Deg. (Heading)", orientation.getYaw(AngleUnit.DEGREES));
+            opmode.telemetry.update();
+        }
+
+        stop();
+        orientation = imu.getRobotYawPitchRollAngles();
+        opmode.telemetry.addData("Yaw", "%.2f Deg. (Heading)", orientation.getYaw(AngleUnit.DEGREES));
+        opmode.telemetry.update();
+//        opmode.sleep(1000);
     }
+
+//    public void turn2Angle(double targetAngle, double speed) {
+//        // left is negative, right is positive
+//        YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
+//        if (targetAngle > 0) {
+//            while (orientation.getYaw(AngleUnit.DEGREES) <= targetAngle) {
+//                opmode.telemetry.addData("angle: ", orientation.getYaw(AngleUnit.DEGREES));
+//            }
+//        } else if (targetAngle < 0) {
+//            while (orientation.getYaw(AngleUnit.DEGREES) >= targetAngle) {
+//                turnRight(speed);
+//                opmode.telemetry.addData("angle: ", orientation.getYaw(AngleUnit.DEGREES));
+//                opmode.telemetry.update();
+//            }
+//        }
+//        stop();
+//        opmode.telemetry.addData("angle: ", orientation.getYaw(AngleUnit.DEGREES));
+//        opmode.telemetry.update();
+//    }
 
     public void turnMath(double angle, double kP) {
         imu.resetYaw();
@@ -270,5 +349,3 @@ public class DriveTrain {
         }
     }
 }
-
-//

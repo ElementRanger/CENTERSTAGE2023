@@ -38,14 +38,12 @@ public class Teleop extends LinearOpMode {
 
         DriveTrain Drive = new DriveTrain();
         Intake intake = new Intake();
-        Test test = new Test();
 
         GamepadStates newGamePad1 = new GamepadStates(gamepad1);
         GamepadStates newGamePad2 = new GamepadStates(gamepad2);
 
         Drive.init(this);
         intake.init(this);
-        test.init(this);
 
         intake.apertureOpen();
 

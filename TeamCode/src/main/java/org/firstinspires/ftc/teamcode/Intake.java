@@ -28,8 +28,11 @@ public class Intake {
     public Servo LeftMand = null;
     public Servo RightArm = null;
     public Servo LeftArm = null;
+    public Servo Light = null;
 
     private ElapsedTime runtime = new ElapsedTime();
+
+    private LinearOpMode opmode = null;
 
     double speed = .5;
     boolean hanging = false;
@@ -43,7 +46,7 @@ public class Intake {
     public void init(LinearOpMode opMode) {
         HardwareMap hwMap;
 
-        opMode = opMode;
+        opmode = opMode;
         hwMap = opMode.hardwareMap;
 
         Drive.init(opMode);
@@ -60,8 +63,11 @@ public class Intake {
         RightArm = hwMap.servo.get("RightArm");
         LeftArm = hwMap.servo.get("LeftArm");
 
+        Light = hwMap.servo.get("Light");
+
         RightSlide.setPower(0);
         LeftSlide.setPower(0);
+
 
         RightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LeftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -79,22 +85,28 @@ public class Intake {
     //slide
     public void slide0() {
         RightSlide.setTargetPosition(0);
-        LeftSlide.setTargetPosition(0);
+        //LeftSlide.setTargetPosition(0);
         slideEncoders();
-        LeftSlide.setPower(.5);
-        RightSlide.setPower(.5);
-        while (LeftSlide.isBusy() && RightSlide.isBusy()) {
+//        LeftSlide.setPower(.5);
+//        RightSlide.setPower(.5);
+        opmode.telemetry.addData("motorPos: " , RightSlide.getCurrentPosition());
+        opmode.telemetry.update();
+        while (/*LeftSlide.isBusy() && */RightSlide.isBusy()) {
+            slideDown();
         }
         slideStop();
+        //LeftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public void slide1() {
         RightSlide.setTargetPosition(1450);
-        LeftSlide.setTargetPosition(1450);
+        //LeftSlide.setTargetPosition(1450);
         slideEncoders();
-        LeftSlide.setPower(.5);
-        RightSlide.setPower(.5);
-        while (LeftSlide.isBusy() && RightSlide.isBusy()) {
+//        LeftSlide.setPower(.5);
+//        RightSlide.setPower(.5);
+        while (/*LeftSlide.isBusy() && */ RightSlide.isBusy()) {
+            slideUp();
             Drive.stop();
         }
         slideStop();
@@ -140,9 +152,16 @@ public class Intake {
         slideEncoders();
         LeftSlide.setPower(.5);
         RightSlide.setPower(.5);
-        while(LeftSlide.isBusy()) {
+        while (LeftSlide.isBusy()) {
         }
         slideStop();
+    }
+
+    public void slideEncoders() {
+//        LeftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        RightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //LeftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void slideMaintain() {
@@ -241,10 +260,9 @@ public class Intake {
 //
 //    }
 
-    public void slideEncoders() {
-        LeftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        RightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        RightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        LeftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+    public void lightChange(double value) {
+        Light.setPosition(value);
     }
 }

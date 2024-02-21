@@ -1,13 +1,16 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.DriveTrain;
 import org.firstinspires.ftc.teamcode.Intake;
 
 @Autonomous(name = "simpleBlue", group = "auto")
+@Disabled
 public class simpleBlue extends LinearOpMode {
+
 
     @Override
     public void runOpMode() throws InterruptedException {

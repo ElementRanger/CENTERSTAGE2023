@@ -16,15 +16,17 @@ import org.firstinspires.ftc.teamcode.Intake;
 
 @Autonomous(name = "AutoTest", group = "Auto")
 public class Auto extends LinearOpMode {
-
-    ColorSensor color;
+DistanceSensor distance;
+DistanceSensor distance2;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         boolean rightDetected = false;
-        double distance = 0;
         boolean finished = false;
+
+        distance = hardwareMap.get(DistanceSensor.class, "distance");
+        distance2 = hardwareMap.get(DistanceSensor.class, "distance2");
 
         DriveTrain Drive = new DriveTrain();
         Intake intake = new Intake();
@@ -36,19 +38,7 @@ public class Auto extends LinearOpMode {
 
         while (opModeIsActive() && !finished) {
 
-            color = hardwareMap.get(ColorSensor.class, "Distance");
-
-            if (color instanceof DistanceSensor) {
-                distance = ((DistanceSensor) color).getDistance(DistanceUnit.CM);
-            }
-
-
-            //drive to spike marks.
-            if (distance <= 5) {
-                rightDetected = true;
-            } else {
-                rightDetected = false;
-            }
+//
             sleep(1000);
             // spike mark right
             if (rightDetected) {
