@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.GamepadStates;
 import org.firstinspires.ftc.teamcode.Intake;
 
 
-@Autonomous(name = "blueClose", group = "auto")
+@Autonomous(name = "blueClose", group = "auto", preselectTeleOp = "Teleop")
 public class blueClose extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -35,9 +35,8 @@ public class blueClose extends LinearOpMode {
 
 
         Drive.forwardDistance(.5, 37);
-        sleep(500);
         Drive.correctHeading(0.5);
-        sleep(500);
+        sleep(200);
 
         if (leftDistance.getDistance(DistanceUnit.CM) < 10) {
             marker = 1;
@@ -49,47 +48,42 @@ public class blueClose extends LinearOpMode {
 
         if (marker == 1) {
             Drive.turn(90, .5, false);
-            sleep(500);
             Drive.correctHeading(0.5);
-            sleep(500);
+            sleep(200);
             Drive.backwardDistance(.5, 22);
-            sleep(500);
             Drive.correctHeading(0.5);
-            sleep(500);
+            sleep(200);
             intake.mandOpen();
             sleep(250);
             intake.RightAp.setPosition(.1);
             sleep(250);
             intake.armLift();
-            sleep(500);
+            sleep(200);
             intake.slide1();
-            sleep(1000);
+            sleep(500);
             Drive.backwardDistance(.5,21);
-            sleep(500);
             Drive.correctHeading(.5);
-            sleep(500);
+            sleep(200);
             Drive.strafeRightFunction(.5, 20);
-            sleep(250);
             Drive.correctHeading(.5);
             sleep(500);
             intake.armScore();
             sleep(500);
-            Drive.backwardDistance(.25, 5);
-            sleep(1000);
+            Drive.backwardDistance(.25, 3);
+            sleep(300);
             intake.LeftAp.setPosition(.2);
             sleep(500);
             intake.armLift();
-            sleep(500);
+            sleep(300);
             intake.mandClose();
-            sleep(250);
+            sleep(300);
             intake.slide0();
-            sleep(1500);
+            sleep(300);
             Drive.strafeRightFunction(.5, 20);
-            sleep(250);
             Drive.backwardDistance(.5, 12);
         } else if(marker == 2) {
             Drive.forwardDistance(.5, 4);
-            sleep(500);
+            sleep(200);
             intake.mandOpen();
             sleep(250);
             intake.RightAp.setPosition(.1);
@@ -97,46 +91,42 @@ public class blueClose extends LinearOpMode {
             intake.armLift();
             sleep(500);
             Drive.backwardDistance(.5, 12);
-            sleep(250);
             Drive.correctHeading(.5);
-            sleep(250);
+            sleep(200);
             Drive.turn(90, .5, false);
-            sleep(250);
             Drive.correctHeading(.5);
-            sleep(250);
+            sleep(200);
             Drive.backwardDistance(.5, 29);
-            sleep(250);
             Drive.correctHeading(.5);
-            sleep(250);
+            sleep(200);
             intake.slide1();
+            intake.slideMaintain();
             sleep(250);
-            Drive.backwardDistance(.5, 19);
-            sleep(250);
+            Drive.backwardDistance(.5, 25);
             Drive.correctHeading(.5);
-            sleep(250);
+            sleep(200);
             intake.armScore();
             sleep(500);
             intake.LeftAp.setPosition(.2);
             sleep(500);
             intake.armLift();
             sleep(500);
+            Drive.forwardDistance(.5, 9);
+            Drive.correctHeading(.5);
+            sleep(200);
             intake.mandClose();
             sleep(250);
             intake.slide0();
-            sleep(1500);
-            Drive.strafeRightFunction(.5, 30);
-            sleep(500);
+            sleep(350);
+            Drive.strafeRightFunction(.5, 34);
             Drive.backwardDistance(.5, 12);
-            sleep(500);
         } else if(marker == 3) {
             Drive.turn(90, .5, false);
-            sleep(500);
             Drive.correctHeading(0.5);
-            sleep(500);
+            sleep(250);
             Drive.forwardDistance(.5, 6);
-            sleep(250);
             Drive.correctHeading(.5);
-            sleep(250);
+            sleep(200);
             intake.mandOpen();
             sleep(250);
             intake.RightAp.setPosition(.1);
@@ -144,9 +134,8 @@ public class blueClose extends LinearOpMode {
             intake.armLift();
             sleep(500);
             Drive.backwardDistance(.5, 56);
-            sleep(250);
             Drive.correctHeading(.5);
-            sleep(250);
+            sleep(200);
             intake.slide1();
             sleep(500);
             intake.armScore();
@@ -158,11 +147,9 @@ public class blueClose extends LinearOpMode {
             intake.mandClose();
             sleep(250);
             intake.slide0();
-            sleep(1500);
+            sleep(350);
             Drive.strafeRightFunction(.5, 45);
-            sleep(500);
             Drive.backwardDistance(.5, 12);
-            sleep(500);
         }
 
     }

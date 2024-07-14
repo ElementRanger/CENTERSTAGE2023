@@ -9,14 +9,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.DriveTrain;
 import org.firstinspires.ftc.teamcode.Intake;
 
-@Autonomous(name = "redClose", group = "auto")
-public class redClose extends LinearOpMode {
+@Autonomous(name = "redFar", group = "auto")
+public class redFar extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-
-        boolean finished = false;
-        int state = 0;
-
         DriveTrain Drive = new DriveTrain();
         Intake intake = new Intake();
 
@@ -45,118 +41,148 @@ public class redClose extends LinearOpMode {
             marker = 2;
         }
 
-        if (marker == 1) {
-            // 9 seconds left/ max: 6
-            Drive.backwardDistance(.5, 4);
+        if(marker == 1) {
             Drive.turn(90, .5, true);
             Drive.correctHeading(.5);
+            sleep(200);
             Drive.forwardDistance(.5, 6);
             Drive.correctHeading(.5);
             sleep(200);
             intake.mandOpen();
             sleep(250);
             intake.RightAp.setPosition(.1);
-            sleep(500);
+            sleep(350);
             intake.armLift();
-            sleep(500);
-            Drive.backwardDistance(.5, 54);
+            sleep(350);
+            Drive.backwardDistance(.5, 6);
             Drive.correctHeading(.5);
             sleep(200);
             intake.mandClose();
             sleep(250);
-            Drive.strafeRightFunction(.5, 21);
+            Drive.strafeLeftFunction(.5, 37);
             Drive.correctHeading(.5);
             sleep(200);
-            Drive.backwardDistance(.5, 4);
+            Drive.backwardDistance(.5, 65);
+            Drive.correctHeading(.5);
+            Drive.strafeRightFunction(.5, 5);
             Drive.correctHeading(.5);
             sleep(200);
-            intake.slide1();
+            Drive.backwardDistance(.5, 28);
+            Drive.correctHeading(.5);
+            sleep(200);
+            Drive.strafeRightFunction(.5, 47);
+            Drive.correctHeading(.5);
+            sleep(200);
+            Drive.backwardDistance(.5, 18);
+            Drive.correctHeading(.5);
+            sleep(200);
+            intake.slide2();
             intake.slideMaintain();
-            sleep(350);
+            sleep(250);
             intake.armScore();
             sleep(500);
             intake.LeftAp.setPosition(.2);
             sleep(500);
             intake.armLift();
-            sleep(500);
+            sleep(350);
             intake.slide0();
-            sleep(500);
-            Drive.forwardDistance(.5, 2);
-            Drive.correctHeading(.5);
-            sleep(200);
-            Drive.strafeLeftFunction(.5, 55);
-            Drive.correctHeading(.5);
-            Drive.backwardDistance(.5, 14);
-        } else if (marker == 2) {
+        } else if(marker == 2) {
             Drive.forwardDistance(.5, 4);
+            Drive.correctHeading(.5);
             sleep(200);
             intake.mandOpen();
             sleep(250);
             intake.RightAp.setPosition(.1);
             sleep(250);
             intake.armLift();
-            sleep(500);
+            sleep(350);
             Drive.backwardDistance(.5, 12);
             sleep(200);
             intake.mandClose();
             sleep(200);
             Drive.correctHeading(.5);
-            sleep(200);
-            Drive.turn(90, .5, true);
-            Drive.correctHeading(.5);
-            sleep(200);
-            Drive.backwardDistance(.5, 47);
-            Drive.correctHeading(.5);
-            sleep(200);
-            Drive.strafeRightFunction(.5, 10);
-            sleep(200);
-            intake.slide1();
-            sleep(150);
-            intake.slideMaintain();
-            sleep(200);
-            intake.armScore();
-            sleep(500);
-            intake.LeftAp.setPosition(.2);
-            sleep(500);
-            intake.armLift();
-            sleep(200);
-            intake.slide0();
-            Drive.strafeLeftFunction(.5, 36);
-            Drive.backwardDistance(.5, 12);
-        } else if (marker == 3) {
-            Drive.turn(90, .5, true);
-            Drive.correctHeading(.5);
-            sleep(200);
-            Drive.backwardDistance(.5, 22);
-            Drive.correctHeading(0.5);
-            sleep(200);
-            intake.mandOpen();
-            sleep(200);
-            intake.RightAp.setPosition(.1);
-            sleep(200);
-            intake.armLift();
-            sleep(200);
-            Drive.backwardDistance(.5, 26);
-            Drive.correctHeading(.5);
-            sleep(200);
-            Drive.strafeLeftFunction(.5, 5);
-            Drive.correctHeading(.5);
-            sleep(200);
-            intake.slide1();
-            intake.slideMaintain();
-            sleep(350);
-            intake.armScore();
-            sleep(500);
-            intake.LeftAp.setPosition(.2);
-            sleep(500);
-            intake.armLift();
             sleep(250);
-            intake.mandClose();
+            Drive.backwardDistance(.5, 24);
+            Drive.correctHeading(.5);
             sleep(200);
-            intake.slide0();
+            Drive.turn(90, .5, true);
+            Drive.correctHeading(.5);
+            sleep(200);
+            Drive.turn(3, .5, true);
+            Drive.correctHeading(.5);
+            sleep(200);
+            Drive.backwardDistance(.5, 65);
+            Drive.strafeRightFunction(.5, 5);
+            Drive.correctHeading(.5);
+            sleep(200);
+            Drive.turn(3, .5, false);
+            Drive.correctHeading(.5);
+            sleep(200);
+            Drive.backwardDistance(.5, 28);
+            Drive.correctHeading(.5);
+            sleep(200);
+            Drive.strafeRightFunction(.5, 26);
+            Drive.correctHeading(.5);
+            sleep(200);
+            Drive.backwardDistance(.5, 20);
+            Drive.correctHeading(.5);
+            sleep(200);
+            intake.slide2();
+            intake.slideMaintain();
+            sleep(250);
+            intake.armScore();
+            sleep(500);
+            intake.LeftAp.setPosition(.2);
+            sleep(500);
+            intake.armLift();
             sleep(350);
-            Drive.strafeLeftFunction(.5, 24);
-            Drive.backwardDistance(.5, 12);
+            intake.slide0();
+        } else if(marker == 3) {
+            Drive.turn(90, .5, false);
+            Drive.correctHeading(.5);
+            sleep(200);
+            Drive.forwardDistance(.5, 8);
+            Drive.correctHeading(.5);
+            intake.mandOpen();
+            sleep(250);
+            intake.RightAp.setPosition(.1);
+            sleep(250);
+            intake.armLift();
+            sleep(500);
+            Drive.backwardDistance(.5, 10);
+            Drive.correctHeading(.5);
+            intake.mandClose();
+            Drive.strafeRightFunction(.5, 38);
+            Drive.correctHeading(.5);
+            Drive.forwardDistance(.5, 65);
+            Drive.correctHeading(.5);
+            sleep(200);
+            Drive.turn(90, .5, true);
+            Drive.correctHeading(.5);
+            sleep(100);
+            Drive.turn(90, .5, true);
+            Drive.correctHeading(.5);
+            sleep(200);
+            Drive.backwardDistance(.5, 34);
+            Drive.correctHeading(.5);
+            sleep(200);
+            Drive.strafeRightFunction(.5, 20);
+            Drive.correctHeading(.5);
+            sleep(200);
+            Drive.backwardDistance(.5, 15);
+            Drive.correctHeading(.5);
+            sleep(200);
+            intake.slide2();
+            intake.slideMaintain();
+            sleep(350);
+            intake.armScore();
+            sleep(500);
+            intake.apertureClose();
+            sleep(500);
+            intake.armLift();
+            sleep(350);
+            intake.slide0();
         }
     }
 }
+

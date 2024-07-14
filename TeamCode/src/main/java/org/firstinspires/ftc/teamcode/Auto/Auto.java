@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -14,10 +15,10 @@ import org.firstinspires.ftc.teamcode.DriveTrain;
 import org.firstinspires.ftc.teamcode.Intake;
 
 
-@Autonomous(name = "AutoTest", group = "Auto")
+@TeleOp(name = "AutoTest", group = "teleop")
 public class Auto extends LinearOpMode {
-DistanceSensor distance;
-DistanceSensor distance2;
+DistanceSensor leftDistance;
+DistanceSensor rightDistance;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -25,8 +26,8 @@ DistanceSensor distance2;
         boolean rightDetected = false;
         boolean finished = false;
 
-        distance = hardwareMap.get(DistanceSensor.class, "distance");
-        distance2 = hardwareMap.get(DistanceSensor.class, "distance2");
+        leftDistance = hardwareMap.get(DistanceSensor.class, "leftDistance");
+        rightDistance = hardwareMap.get(DistanceSensor.class, "rightDistance");
 
         DriveTrain Drive = new DriveTrain();
         Intake intake = new Intake();
@@ -36,27 +37,10 @@ DistanceSensor distance2;
 
         waitForStart();
 
-        while (opModeIsActive() && !finished) {
-
-//
-            sleep(1000);
-            // spike mark right
-            if (rightDetected) {
-                Drive.turn(-60, .38, false);
-                sleep(500);
-            }
-
-            intake.mandOpen();
-            sleep(250);
-            intake.RightAp.setPosition(.1);
-            sleep(250);
-            intake.armLift();
-            // drive forward to place pixel
-
-            telemetry.addData("detected: ", rightDetected);
+        while (opModeIsActive()) {
+            telemetry.addData("Distance", rightDistance.getDistance(DistanceUnit.MM));
+            telemetry.addData("Distance", rightDistance.getDistance(DistanceUnit.CM));
             telemetry.update();
-            sleep(5000);
-            finished = true;
         }
     }
 }

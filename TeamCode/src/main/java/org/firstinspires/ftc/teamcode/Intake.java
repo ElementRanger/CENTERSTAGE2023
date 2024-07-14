@@ -6,6 +6,7 @@ import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad2;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static java.lang.Thread.sleep;
 
 import android.transition.Slide;
@@ -29,6 +30,7 @@ public class Intake {
     public Servo RightArm = null;
     public Servo LeftArm = null;
     public Servo Light = null;
+    public Servo plane = null;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -63,6 +65,8 @@ public class Intake {
         RightArm = hwMap.servo.get("RightArm");
         LeftArm = hwMap.servo.get("LeftArm");
 
+        plane = hwMap.servo.get("plane");
+
         Light = hwMap.servo.get("Light");
 
         RightSlide.setPower(0);
@@ -72,7 +76,7 @@ public class Intake {
         RightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LeftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        LeftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        LeftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         RightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         LeftSlide.setDirection(REVERSE);
@@ -80,6 +84,7 @@ public class Intake {
         armGrab();
         apertureOpen();
         mandClose();
+        plane.setPosition(.5);
     }
 
     //slide
@@ -89,10 +94,10 @@ public class Intake {
         slideEncoders();
 //        LeftSlide.setPower(.5);
 //        RightSlide.setPower(.5);
-        opmode.telemetry.addData("motorPos: " , RightSlide.getCurrentPosition());
-        opmode.telemetry.update();
+
         while (/*LeftSlide.isBusy() && */RightSlide.isBusy()) {
-            slideDown();
+            RightSlide.setPower(-.5);
+            LeftSlide.setPower(-.5);
         }
         slideStop();
         //LeftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -114,23 +119,26 @@ public class Intake {
 
     public void slideHang() {
         RightSlide.setTargetPosition(2450);
-        LeftSlide.setTargetPosition(2450);
+//        LeftSlide.setTargetPosition(2450);
         slideEncoders();
-        RightSlide.setPower(.5);
-        LeftSlide.setPower(.5);
         hanging = true;
-        while (LeftSlide.isBusy() && RightSlide.isBusy()) {
+        while (RightSlide.isBusy()) {
+            RightSlide.setPower(.5);
+            LeftSlide.setPower(.5);
+            opmode.telemetry.addData("Slide position: ", RightSlide.getCurrentPosition());
+            opmode.telemetry.update();
         }
-
+        slideStop();
     }
 
     public void slide2() {
-        RightSlide.setTargetPosition(1550);
-        LeftSlide.setTargetPosition(1550);
+        RightSlide.setTargetPosition(1950);
         slideEncoders();
-        RightSlide.setPower(.5);
-        LeftSlide.setPower(.5);
-        while (LeftSlide.isBusy() && RightSlide.isBusy()) {
+
+        while (RightSlide.isBusy()) {
+            RightSlide.setPower(.5);
+            LeftSlide.setPower(.5);
+            Drive.stop();
         }
         slideStop();
     }
@@ -175,8 +183,8 @@ public class Intake {
     }
 
     public void slideDown() {
-        RightSlide.setPower(-.5);
-        LeftSlide.setPower(-.5);
+        RightSlide.setPower(-.7);
+        LeftSlide.setPower(-.7);
     }
 
     public void slideStop() {
@@ -186,8 +194,8 @@ public class Intake {
 
     //obtaining pixels
     public void apertureOpen() {
-        LeftAp.setPosition(.4);
-        RightAp.setPosition(.35);
+        LeftAp.setPosition(.39);
+        RightAp.setPosition(.4);
     }
 
     public void apertureClose() {
@@ -230,35 +238,9 @@ public class Intake {
 
     }
 
-    public void purplePixel() {
-        RightAp.setPosition(0.1);
-        RightMand.setPosition(0.35);
+    public void plane(){
+        plane.setPosition(.4);
     }
-
-
-//    public void pixels() throws InterruptedException {
-//        // Automate Intake later
-//
-//
-//        //close aperture
-//        apertureClose();
-//        sleep(500);
-//
-//        //move slides down
-//        sleep(500);
-//
-//        // open aperture
-//        apertureOpen();
-//        sleep(500);
-//
-//        //lift slides to position one
-//        sleep(500);
-//
-//        //move arm to scoring positions
-//        armLift();
-//        sleep(500);
-//
-//    }
 
 
 
