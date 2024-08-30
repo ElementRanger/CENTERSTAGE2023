@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 
 import android.graphics.Path;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -14,6 +15,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import org.firstinspires.ftc.teamcode.DriveTrain;
 import org.firstinspires.ftc.teamcode.GamepadStates;
 
+@Disabled
 @TeleOp(name = "Basic: Teleop", group = "Teleop")
 public class Teleop extends LinearOpMode {
     @Override
@@ -168,7 +170,7 @@ public class Teleop extends LinearOpMode {
 //                    stateThere = true;
 //                } else if (stateSlide == 1) {
 //                    intake.slide1();
-//                    stateThere = true;
+//                    stateThere = true;f
 //                } else if (stateSlide == 2) {
 //                    intake.slide2();
 //                    stateThere = true;
