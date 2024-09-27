@@ -35,8 +35,8 @@ public class TeleopTraining extends LinearOpMode {
             newGamePad1.updateState();
             newGamePad2.updateState();
 
-            if (true) {
-                Drive.forward(gamepad1);
+            if (newGamePad1.a.state) {
+                Drive.forward(1);
             } else {
                 Drive.stop();
 
